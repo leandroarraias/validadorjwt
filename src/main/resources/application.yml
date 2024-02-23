@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: validadorjwt
+constraints:
+  jwt:
+    tamanhomaximo: 1000
+  name:
+    tamanhomaximo: 256
+  seed:
+    valormaximo: 2147483647
