@@ -8,3 +8,16 @@ constraints:
     tamanhomaximo: 256
   seed:
     valormaximo: 2147483647
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  server:
+    port: 9101
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus
+  metrics:
+    tags:
+      application: validadorjwt
