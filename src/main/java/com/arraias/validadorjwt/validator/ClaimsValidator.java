@@ -22,9 +22,6 @@ public class ClaimsValidator {
 	@Value("${constraints.seed.valormaximo}")
 	private int seedValorMaximo;
 
-	@Value("${constraints.name.tamanhomaximo}")
-	private int nameTamanhoMaximo;
-
 	private final NomeValidator nomeValidator;
 
 	private static final Logger logger = LoggerFactory.getLogger(ClaimsValidator.class);
@@ -49,7 +46,7 @@ public class ClaimsValidator {
 		}
 
 		for (String claim : claims.keySet().stream().toList()) {
-			if (ClaimsEnum.valueOf(claim.toUpperCase()) == null) {
+			if (claim == null || ClaimsEnum.get(claim.toUpperCase()) == null) {
 				logger.info("Claim {} nao permitido", escapeHtml4(claim));
 				return false;
 			}
@@ -67,7 +64,7 @@ public class ClaimsValidator {
 
 		if (claimRole instanceof String role) {
 
-			if (RolesEnum.valueOf(role.toUpperCase()) != null) {
+			if (RolesEnum.get(role.toUpperCase()) != null) {
 				return true;
 			}
 
@@ -111,21 +108,8 @@ public class ClaimsValidator {
 	}
 
 	public boolean validarName(Object claimName) {
-
 		if (claimName instanceof String name) {
-
-			if (name.length() > nameTamanhoMaximo) {
-				logger.info("Claim Name com tamanho invalido: {}", name.length());
-				return false;
-			}
-
-			if (nomeValidator.validarNome(name)) {
-				return true;
-			}
-
-			logger.info("Claim Name com valor invalido: {}", escapeHtml4(name));
-			return false;
-
+			return nomeValidator.validarNome(name);
 		} else {
 			logger.info("Claim Name nao eh String");
 			return false;
