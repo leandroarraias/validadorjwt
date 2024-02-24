@@ -23,9 +23,6 @@ class ClaimsValidatorTest {
 	@Autowired
 	private ClaimsValidator claimsValidator;
 
-	@Value("${constraints.name.tamanhomaximo}")
-	private int nameTamanhoMaximo;
-
 	@Value("${constraints.seed.valormaximo}")
 	private int seedValorMaximo;
 
