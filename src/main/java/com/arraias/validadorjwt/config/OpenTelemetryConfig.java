@@ -26,8 +26,8 @@ public class OpenTelemetryConfig {
 	@Value("${spring.application.name}")
 	private String applicationName;
 
-	@Value("${otlp.endpoint}")
-	private String otlpEndpoint;
+	@Value("${otel.endpoint}")
+	private String otelEndpoint;
 
 	@Bean
 	OpenTelemetry openTelemetry(
@@ -66,7 +66,7 @@ public class OpenTelemetryConfig {
 
 		OtlpGrpcLogRecordExporter logRecordExporter = OtlpGrpcLogRecordExporter
 				.builder()
-				.setEndpoint(otlpEndpoint)
+				.setEndpoint(otelEndpoint)
 				.build();
 
 		return BatchLogRecordProcessor
