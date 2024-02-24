@@ -31,6 +31,13 @@ services:
     ports:
       - "9090:9090"
 
+  loki:
+    container_name: loki-validatorjwt
+    image: grafana/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+
   tempo:
     container_name: tempo-validatorjwt
     image: grafana/tempo
