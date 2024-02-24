@@ -19,7 +19,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
+			<artifactId>micrometer-registry-otlp</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>
@@ -27,7 +27,7 @@
 		</dependency>
 		<dependency>
 			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-exporter-zipkin</artifactId>
+			<artifactId>opentelemetry-exporter-otlp</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
