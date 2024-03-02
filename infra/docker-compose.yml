@@ -53,8 +53,8 @@ services:
     image: grafana/grafana
     restart: always
     volumes:
-      - ./cfg/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
-      - ./cfg/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./cfg/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./cfg/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
     ports:
       - "3000:3000"
 
