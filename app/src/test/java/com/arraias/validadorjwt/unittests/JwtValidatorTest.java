@@ -2,7 +2,7 @@ package com.arraias.validadorjwt.unittests;
 
 import com.arraias.validadorjwt.validator.ClaimsValidator;
 import com.arraias.validadorjwt.validator.JwtValidator;
-import com.arraias.validadorjwt.validator.NomeValidator;
+import com.arraias.validadorjwt.validator.NomePortuguesValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(classes = {JwtValidator.class, ClaimsValidator.class, NomeValidator.class, ObjectMapper.class})
+@SpringBootTest(classes = {JwtValidator.class, ClaimsValidator.class, NomePortuguesValidator.class, ObjectMapper.class})
 class JwtValidatorTest {
 
 	@Autowired

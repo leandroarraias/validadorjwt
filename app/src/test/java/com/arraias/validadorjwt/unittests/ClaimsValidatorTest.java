@@ -3,7 +3,7 @@ package com.arraias.validadorjwt.unittests;
 import com.arraias.validadorjwt.enums.ClaimsEnum;
 import com.arraias.validadorjwt.enums.RolesEnum;
 import com.arraias.validadorjwt.validator.ClaimsValidator;
-import com.arraias.validadorjwt.validator.NomeValidator;
+import com.arraias.validadorjwt.validator.NomePortuguesValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +17,7 @@ import static java.math.BigInteger.ONE;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(classes = {ClaimsValidator.class, NomeValidator.class})
+@SpringBootTest(classes = {ClaimsValidator.class, NomePortuguesValidator.class})
 class ClaimsValidatorTest {
 
 	@Autowired

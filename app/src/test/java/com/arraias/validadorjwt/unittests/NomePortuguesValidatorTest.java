@@ -1,5 +1,6 @@
 package com.arraias.validadorjwt.unittests;
 
+import com.arraias.validadorjwt.validator.NomePortuguesValidator;
 import com.arraias.validadorjwt.validator.NomeValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,8 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(classes = {NomeValidator.class})
-class NomeValidatorTest {
+@SpringBootTest(classes = {NomePortuguesValidator.class})
+class NomePortuguesValidatorTest {
 
 	@Autowired
 	private NomeValidator nomeValidator;
