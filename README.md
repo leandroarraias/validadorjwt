@@ -27,31 +27,13 @@ Integer.MAX_VALUE (2.147.483.647). Essa limitação também responde à requisit
 seguinte
  - Para padronização, o seed informato deverá ser o formato String, e não número
  - O Name foi limitado a caracteres de nomes em Português
- - As claims e roles podem ser case insensitive.
+ - As claims e roles são case insensitive.
 
 # Arquitetura
 
 ### Diagrama de Integração
 
 <img alt="Arquitetura" src="./img/arquitetura.png">
-
-# Segurança
-### OWASP Top 10
-A aplicação responde (ou contribui para) os seguintes ataques descritos no 
-[OWASP API Security Top 10 (2013)](https://owasp.org/API-Security/editions/2023/en/0x11-t10/)
-1. Broken Object Level Authorization: A validação do token JWT é primordial para mitigar esse tipo de ataque,
-pois antes de verificar a autorização à um determinado recurso, é necessário verificar a validade do token.
-2. Broken Object Property Level Authorization: Os dados retornados, inclusive os status, são limitados, dificultando
-inclusive um ataque de discovery.
-3. Unrestricted Resource Consumption: A aplicação realiza uma validação prévia do tamanho do token enviado antes mesmo
-de tentar realizar o parse ou qualquer outra validação que consumirá mais recursos. Adicionalmente, como não houve 
-requisito específico, o tamanho do seed foi limitado de maneira a garantir a performance no cálculo de um número primo.
-4. Broken Function Level Authorization: A validação do token JWT é primordial para mitigar esse tipo de ataque,
-pois antes de verificar a autorização à uma determinada API, é necessário verificar a validade do token.
-5. Security Misconfiguration: Tratamento central das exceptions evitando que detalhes do erro, como stacktrace, sejam
-retornados na requisição expondo detalhes da implementação da aplicação. Adicionalmente, payloads críticos e impressões
-necessárias em logs de informações dadas pelo cliente, são tratadas realizando scaping de caracteres utilizados em
-ataques.
 
 #### Observação:
 Essa aplicação expõe um endpoint para testes de observability que estaria suscetível à ataques classificados como
@@ -132,6 +114,24 @@ Content-Length: 137
 
 eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJTZWVkIjoiNzg0MSIsIk5hbWUiOiJUb25pbmhvIEFyYXVqbyJ9.QY05sIjtrcJnP533kQNk8QXcaleJ1Q01jWY_ZzIZuAg
 ```
+
+# Segurança
+### OWASP Top 10
+A aplicação responde (ou contribui para) os seguintes ataques descritos no
+[OWASP API Security Top 10 (2013)](https://owasp.org/API-Security/editions/2023/en/0x11-t10/)
+1. Broken Object Level Authorization: A validação do token JWT é primordial para mitigar esse tipo de ataque,
+   pois antes de verificar a autorização à um determinado recurso, é necessário verificar a validade do token.
+2. Broken Object Property Level Authorization: Os dados retornados, inclusive os status, são limitados, dificultando
+   inclusive um ataque de discovery.
+3. Unrestricted Resource Consumption: A aplicação realiza uma validação prévia do tamanho do token enviado antes mesmo
+   de tentar realizar o parse ou qualquer outra validação que consumirá mais recursos. Adicionalmente, como não houve
+   requisito específico, o tamanho do seed foi limitado de maneira a garantir a performance no cálculo de um número primo.
+4. Broken Function Level Authorization: A validação do token JWT é primordial para mitigar esse tipo de ataque,
+   pois antes de verificar a autorização à uma determinada API, é necessário verificar a validade do token.
+5. Security Misconfiguration: Tratamento central das exceptions evitando que detalhes do erro, como stacktrace, sejam
+   retornados na requisição expondo detalhes da implementação da aplicação. Adicionalmente, payloads críticos e impressões
+   necessárias em logs de informações dadas pelo cliente, são tratadas realizando scaping de caracteres utilizados em
+   ataques.
 
 # Observability
 
