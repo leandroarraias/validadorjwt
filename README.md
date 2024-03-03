@@ -1,16 +1,16 @@
-# Descrição
+# Descrição Geral da Aplicação
 
-Aplicação WEB para validação de tokens JWT.
+### Objetivo
 
-## Funcionalidade básica
+Esta aplicação WEB destina-se à validação de tokens JWT.
+
 A aplicação terá um único serviço exposto ao cliente, que consiste na validação de tokens JWT.
 
-O token é informado à aplcação via requisição de uma API REST, que irá retornar um valor booleano: true se token válido,
-false se inválido. Adicionalmente, os status HTTP do response serão 200 (OK) para os tokens válidos e 403 (FORBIDDEN)
-para inválidos.
+O token é informado à aplicação via requisição de uma API REST, que irá retornar um valor booleano: ``true`` se token 
+válido, ``false`` se inválido. Adicionalmente, os status HTTP do response serão ``200 (OK)`` para os tokens válidos 
+e ``403 (FORBIDDEN)`` para inválidos.
 
-Caso ocorra algum erro sistêmico durante a requisição, será retornado false no response e status 500
-(INTERNAL_SERVER_ERROR).
+Caso ocorra algum erro sistêmico durante a requisição, será retornado false no response e status ``500 (INTERNAL_SERVER_ERROR)``.
 
 ### Regras de validação do token
 
@@ -21,9 +21,16 @@ Caso ocorra algum erro sistêmico durante a requisição, será retornado false 
 - A claim Seed deve ser um número primo
 - O tamanho máximo da claim Name é de 256 caracteres
 
-## Pré requisitos
+# Arquitetura
+
+### Diagrama de Integração
+
+<img alt="Arquitetura" src="./img/arquitetura.png">
+
+# Pré requisitos
 ### Java
-Certifique-se de que a versão corrente do Java instalado seja a 17. Para verificar, execute o comando ``java -version``. O resultado, deverá ser semelhante ao exibido abaixo:
+Certifique-se de que a versão corrente do Java instalado seja a 17. Para verificar, execute o comando ``java -version``. 
+O resultado, deverá ser semelhante ao exibido abaixo:
 
 ```
 D:\workspace\validadorjwt>java -version
@@ -35,7 +42,10 @@ OpenJDK 64-Bit Server VM (build 17.0.2+8-86, mixed mode, sharing)
 Caso não possua, realizar o download e instalação conforme [site oficial](https://docs.oracle.com/en/java/javase/17/install/overview-jdk-installation.html#GUID-8677A77F-231A-40F7-98B9-1FD0B48C346A)
 
 ### Maven
-Certifique-se de que a versão corrente do Maven instalado seja a 3.X.X. Para verificar, execute o comando ``mvn -version``. O resultado, deverá ser semelhante ao exibido abaixo:
+
+A aplicação possui o maven wrapper não sendo obrigatória sua instalação na máquina local. Mas caso já o tenha instalado,
+certifique-se de que a versão corrente seja a 3.X.X. Para verificar, execute o comando ``mvn -version``. O resultado, 
+deverá ser semelhante ao exibido abaixo:
 
 ```
 D:\workspace\validadorjwt>mvn -version
@@ -46,10 +56,13 @@ Default locale: pt_BR, platform encoding: Cp1252
 OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
 ```
 
-Caso não possua, realizar o download e instalação conforme [site oficial](https://maven.apache.org/users/index.html)
+Caso seja necessário nova instalação, realizar o download e configuração conforme [site oficial](https://maven.apache.org/users/index.html)
 
 ### Docker
-Certifique-se de que o Docker esteja instalado, executando o comando ``docker --version``. O resultado, deverá ser semelhante ao exibido abaixo:
+
+Os sistemas de observability estão configurados para serem utilizados como containers Docker. Portanto, certifique-se de 
+que o Docker esteja instalado, executando o comando ``docker --version``. O resultado, deverá ser semelhante ao exibido 
+abaixo:
 
 ```
 D:\workspace\validadorjwt>docker --version
@@ -58,20 +71,24 @@ Docker version 20.10.17, build 100c701
 
 Caso não possua, realizar o download e instalação conforme [site oficial](https://docs.docker.com/engine/install/)
 
-## Startup da aplicação
+# Startup da aplicação
 1. Realizar o download da aplicação em sua pasta de preferência.
 2. Na pasta ``infra`` executar o comando ``docker compose -p validadorjwt up`` para inicializar os containers de observability.
 3. Na pasta ``app`` executar o comando ``mvnw spring-boot:run`` para inicializar a aplicação.
 
-## Contrato da API
+# Execução
 
-O contrato da API no formato OpenAPI 3 atualiado para geração de clients está disponível para download [aqui](http://localhost:8080/api-docs.yaml), ou ser visualizado no browser [aqui](http://localhost:8080/api-docs).
+### Contrato da API
+
+O contrato da API no formato OpenAPI 3 atualiado para geração de clients está disponível para download [aqui](http://localhost:8080/api-docs.yaml), ou 
+ser visualizado no browser [aqui](http://localhost:8080/api-docs).
 
 A página de documentação da API no formato Swagger pode ser acessada [aqui](http://localhost:8080/api-docs/swagger.html).
 
-## Execução da API
+### Execução da API
 
-A execução da validação de um token JWT é relativamente simples. Conforme pode ser observado em mais detalhes na definição do contrato informado na seção Contrato da API, para realizar a validação de um token JWT deve-se executar um ``POST`` na URI ``/jwt/validar``, informando o token JWT no body no formato ``text/plain``.
+A execução da validação de um token JWT é relativamente simples. Conforme pode ser observado em mais detalhes na definição 
+do contrato informado na seção Contrato da API, para realizar a validação de um token JWT deve-se executar um ``POST`` na URI ``/jwt/validar``, informando o token JWT no body no formato ``text/plain``.
 
 Abaixo segue um exemplo da requisição HTTP para a validação de um dado token:
 
@@ -84,11 +101,7 @@ Content-Length: 137
 eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJTZWVkIjoiNzg0MSIsIk5hbWUiOiJUb25pbmhvIEFyYXVqbyJ9.QY05sIjtrcJnP533kQNk8QXcaleJ1Q01jWY_ZzIZuAg
 ```
 
-## Arquitetura geral da solução
-
-<img alt="Arquitetura" src="./img/arquitetura.png">
-
-## Observability
+# Observability
 
 As seguintes soluções e recursos foram utilizados para prover observabilidade à aplicação:
 
@@ -107,21 +120,21 @@ Assim como o Spring Boot Actuator, trata-se de um conjunto de dependências adic
 
 ### Opentelemetry collector
 
-O OpenTelemetry Collector (otel collector) oferece uma implementação independente de fornecedor sobre como receber, 
+O OpenTelemetry Collector (otel collector) oferece uma implementação independente de fornecedor sobre como receber,
 processar e exportar dados de telemetria. Ele reduz a necessidade de executar, operar e manter vários agentes/coletores.
 Sendo assim, a aplicação é configurada para enviar dados de telemtria apenas para o otel collector, que por sua vez,
 às envia para os sistemas de telemetria selecionados.
 
 A configuração dos receivers e exporters estão definidos no arquivo ./infra/cfg/otel-collector.yml. Nele, as seguintes
 soluções de telemetria foram configuradas:
- - Métricas: Prometheus
- - Tracing: Zipkin e Tempo
- - Logs: Loki
+- Métricas: Prometheus
+- Tracing: Zipkin e Tempo
+- Logs: Loki
 
 ### Prometheus
 
-O Prometheus é um conjunto de ferramentas de monitoramento de sistemas e alerta de código aberto. Ele coleta e armazena 
-métricas como dados de séries temporais, ou seja, as informações de métricas são armazenadas com o carimbo de data e 
+O Prometheus é um conjunto de ferramentas de monitoramento de sistemas e alerta de código aberto. Ele coleta e armazena
+métricas como dados de séries temporais, ou seja, as informações de métricas são armazenadas com o carimbo de data e
 hora no qual foram registradas, juntamente com pares chave-valor opcionais chamados rótulos.
 
 Devido algumas métricas fornecidas pelo Opentelemetry collector divergirem das oferecidas pela biblioteca do Micrometer,
@@ -135,7 +148,7 @@ Home:
 
 ### Zipkin
 
-O Zipkin é um sistema de tracing distribuído. Ele auxilia na coleta de dados temporais necessários para solucionar 
+O Zipkin é um sistema de tracing distribuído. Ele auxilia na coleta de dados temporais necessários para solucionar
 problemas de latência em arquiteturas de serviços. Na arquitetura de solução proposta da aplicação, ele é alimentado
 pelo Opentelemetry collector.
 
@@ -209,7 +222,7 @@ Para consultar os traces no Tempo:
 
 ### Grafana
 
-Grafana é uma plataforma de análise e monitoramento de código aberto que integra dados de diversas fontes em uma 
+Grafana é uma plataforma de análise e monitoramento de código aberto que integra dados de diversas fontes em uma
 interface visual personalizável.
 
 Nessa solução, utilizamos o Grafana para centralizar as soluções de observability: Loki para logs, Tempo para tracing e
@@ -227,3 +240,6 @@ Para acessar o Grafana: [http://localhost:3000](http://localhost:3000).
 2. Dashboard Requisições HTTP:
 
 <img alt="Requisições HTTP" src="./img/grafana_dash_http.png">
+
+
+
