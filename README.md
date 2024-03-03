@@ -131,7 +131,7 @@ Para acessar o Prometheus: [http://localhost:9090/](http://localhost:9090/)
 
 Home:
 
-<img alt="Arquitetura" src="./img/prometheus_home.png">
+<img alt="Prometheus Home" src="./img/prometheus_home.png">
 
 ### Zipkin
 
@@ -146,12 +146,63 @@ Para acessar o Zipkin: [http://localhost:9411/zipkin/](http://localhost:9411/zip
 
 Home:
 
-<img alt="Arquitetura" src="./img/zipkin_home.png">
+<img alt="Zipkin Home" src="./img/zipkin_home.png">
 
 Consulta geral realizada:
 
-<img alt="Arquitetura" src="./img/zipkin_run_query.png">
+<img alt="Zipkin Run Query" src="./img/zipkin_run_query.png">
 
 Tracing selecionado:
 
-<img alt="Arquitetura" src="./img/zipkin_show.png">
+<img alt="Zipkin Show" src="./img/zipkin_show.png">
+
+### Loki
+
+Loki é um sistema de agregação de logs escalável, altamente disponível e multi-tenant.
+
+Na solução adotada nessa aplicação, ele é alimentado pelo Opentelemetry collector e os logs propriamente dito podem
+ser acessados no Grafana:
+
+Para consultar os logs no Loki:
+
+1. Acessar a opção ``Explore`` no Grafana:
+
+<img alt="Grafana Menu Explore" src="./img/grafana_menu_explore.png">
+
+2. Na página de ``Explore``, selecionar o Loki como datasource e a aplicação no job:
+
+<img alt="Loki Datasource" src="./img/grafana_loki_filter.png">
+
+3. Exemplo de resultado:
+
+<img alt="Loki Result" src="./img/grafana_loki_result.png">
+
+### Tempo
+
+O Grafana Tempo é um sistema de tracing distribuído.
+
+Aqui, ele é utilizado em paralelo ao Zipkin devido sua fácil integraçaõ com o Grafana e Loki, permitindo em um único
+sistema a integração entre dashboards, traces e logs. É alimentado pelo Opentelemetry collector e os traces podem
+ser acessados no Grafana:
+
+Para consultar os traces no Tempo:
+
+1. Acessar a opção ``Explore`` no Grafana:
+
+<img alt="Grafana Menu Explore" src="./img/grafana_menu_explore.png">
+
+2. (A) Na página de ``Explore``, na aba ``Search``, selecionar o Tempo como datasource e a aplicação no Service Name:
+
+<img alt="Tempo Datasource" src="./img/grafana_tempo_filter.png">
+
+2. (B) Na página de ``Explore``, na aba ``TraceQL``, selecionar o Tempo como datasource e informar um traceId:
+
+<img alt="Tempo Datasource 2" src="./img/grafana_tempo_filter_2.png">
+
+3. Exemplo de resultado:
+
+<img alt="Tempo Result" src="./img/grafana_tempo_result.png">
+
+4. No resultado, é possível identificar os logs associados ao tracing clicando na opção ``Logs for this span``:
+
+<img alt="Tempo Loki Integration" src="./img/grafana_tempo_loki_integration.png">
