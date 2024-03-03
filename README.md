@@ -84,32 +84,74 @@ Content-Length: 137
 eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJTZWVkIjoiNzg0MSIsIk5hbWUiOiJUb25pbmhvIEFyYXVqbyJ9.QY05sIjtrcJnP533kQNk8QXcaleJ1Q01jWY_ZzIZuAg
 ```
 
-# validadorjwt
-API para validação de tokens JWT
+## Arquitetura geral da solução
 
-ClaimsValidator
-Explicar limitação seed e name
-Explicar seed como string
-Explicar claims case insensitive
+<img alt="Arquitetura" src="./img/arquitetura.png">
 
-ajustar dados impressos nos logs
+## Observability
 
-dashboards necessários:
-start time
-jvm metrics
+As seguintes soluções e recursos foram utilizados para prover observabilidade à aplicação:
 
-quantidade requisições:
-- Http Server requests Rates
-   - sum by (method,uri,status) (rate(http_server_requests_seconds_count{uri!="/actuator/prometheus"}[1m]))
+### Spring Boot Actuator
 
+O Spring Boot Actuator é um conjunto de recursos adicionais oferecidos pelo Spring Boot para facilitar a monitorização e
+gestão de uma aplicação Spring Boot em execução. Ele fornece endpoints que expõem informações sobre a aplicação,
+como métricas, informações de saúde, informações sobre propriedades de configuração, entre outros.
 
-tempo requisições
-media tempo requisições
-status requisições
-top 10 lentas
-top 10 executadas
-estastistica logs
+### Micrometer
 
-alertas de falha
+O Micrometer fornece um facade para os sistemas de observability mais populares, permitindo a instrumentação do
+código da aplicação baseada em JVM.
 
-increase(http_server_requests_seconds_count{}[1m])
+Assim como o Spring Boot Actuator, trata-se de um conjunto de dependências adicionadas ao pom.xml da aplicação.
+
+### Opentelemetry collector
+
+O OpenTelemetry Collector (otel collector) oferece uma implementação independente de fornecedor sobre como receber, 
+processar e exportar dados de telemetria. Ele reduz a necessidade de executar, operar e manter vários agentes/coletores.
+Sendo assim, a aplicação é configurada para enviar dados de telemtria apenas para o otel collector, que por sua vez,
+às envia para os sistemas de telemetria selecionados.
+
+A configuração dos receivers e exporters estão definidos no arquivo ./infra/cfg/otel-collector.yml. Nele, as seguintes
+soluções de telemetria foram configuradas:
+ - Métricas: Prometheus
+ - Tracing: Zipkin e Tempo
+ - Logs: Loki
+
+### Prometheus
+
+O Prometheus é um conjunto de ferramentas de monitoramento de sistemas e alerta de código aberto. Ele coleta e armazena 
+métricas como dados de séries temporais, ou seja, as informações de métricas são armazenadas com o carimbo de data e 
+hora no qual foram registradas, juntamente com pares chave-valor opcionais chamados rótulos.
+
+Devido algumas métricas fornecidas pelo Opentelemetry collector divergirem das oferecidas pela biblioteca do Micrometer,
+optou-se nessa solução pelo uso de ambas na alimentação de métricas ao Prometheus.
+
+Para acessar o Prometheus: [http://localhost:9090/](http://localhost:9090/)
+
+Home:
+
+<img alt="Arquitetura" src="./img/prometheus_home.png">
+
+### Zipkin
+
+O Zipkin é um sistema de tracing distribuído. Ele auxilia na coleta de dados temporais necessários para solucionar 
+problemas de latência em arquiteturas de serviços. Na arquitetura de solução proposta da aplicação, ele é alimentado
+pelo Opentelemetry collector.
+
+Aqui, ele foi selecionado em paralelo ao ``Tempo`` devido sua interface mais amigável, enquanto o ``Tempo`` oferece
+uma integração mais natural com o Grafana.
+
+Para acessar o Zipkin: [http://localhost:9411/zipkin/](http://localhost:9411/zipkin/)
+
+Home:
+
+<img alt="Arquitetura" src="./img/zipkin_home.png">
+
+Consulta geral realizada:
+
+<img alt="Arquitetura" src="./img/zipkin_run_query.png">
+
+Tracing selecionado:
+
+<img alt="Arquitetura" src="./img/zipkin_show.png">
