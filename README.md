@@ -305,6 +305,3 @@ Para acessar o Grafana: [http://localhost:3000](http://localhost:3000).
 2. Dashboard Requisições HTTP:
 
 <img alt="Requisições HTTP" src="./img/grafana_dash_http.png">
-
-
-
