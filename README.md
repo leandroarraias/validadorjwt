@@ -206,3 +206,24 @@ Para consultar os traces no Tempo:
 4. No resultado, é possível identificar os logs associados ao tracing clicando na opção ``Logs for this span``:
 
 <img alt="Tempo Loki Integration" src="./img/grafana_tempo_loki_integration.png">
+
+### Grafana
+
+Grafana é uma plataforma de análise e monitoramento de código aberto que integra dados de diversas fontes em uma 
+interface visual personalizável.
+
+Nessa solução, utilizamos o Grafana para centralizar as soluções de observability: Loki para logs, Tempo para tracing e
+Prometheus para métricas.
+
+Adicionalmente, foram criados 2 dashboards: JVM Micrometer com os dados básicos da saúde da JVM e Requisições HTTP para
+métricas de processamento da API de validação de tokens JWT.
+
+Para acessar o Grafana: [http://localhost:3000](http://localhost:3000).
+
+1. Dashboard JVM Micrometer:
+
+<img alt="JVM Micrometer" src="./img/grafana_dash_jvm_micrometer.png">
+
+2. Dashboard Requisições HTTP:
+
+<img alt="Requisições HTTP" src="./img/grafana_dash_http.png">
