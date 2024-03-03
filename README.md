@@ -29,17 +29,16 @@ seguinte
  - O Name foi limitado a caracteres de nomes em Português
  - As claims e roles são case insensitive.
 
+# Estrutura de pastas
+ - app: Código fonte da aplicação
+ - img: Imagens utilizadas na elaboração do README.md
+ - infra: Configuração da infraestrutura necessária para execução da aplicação
+
 # Arquitetura
 
 ### Diagrama de Integração
 
 <img alt="Arquitetura" src="./img/arquitetura.png">
-
-#### Observação:
-Essa aplicação expõe um endpoint para testes de observability que estaria suscetível à ataques classificados como
-``Improper Inventory Management``. Esse endpoint deverá ser exposto "apenas" em ambiente local e de testes, jamais
-deva ser exposto em produção. Na classe, foi adicionada a limitação por código por meio da annotation
-``@Profile({"!homol", "!prod"})``.
 
 # Pré requisitos
 ### Java
@@ -115,6 +114,34 @@ Content-Length: 137
 eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJTZWVkIjoiNzg0MSIsIk5hbWUiOiJUb25pbmhvIEFyYXVqbyJ9.QY05sIjtrcJnP533kQNk8QXcaleJ1Q01jWY_ZzIZuAg
 ```
 
+# Customização
+### Regra de validação de nome
+O sistema permite a inclusão de novas regras de validação de nomes,e selecionar a regra a ser utilizada via arquivo 
+application.yml. Para isso, deve-se seguir os seguintes passos:
+
+1. Criar uma nova classe concreta que implemente a interface ``NomeValidator``, e seja uma Spring Bean com um nome
+único. Por exemplo:
+
+```
+@Component("nomeChinesValidator")
+public class NomeChinesValidator implements NomeValidator {
+
+	@Override
+	public boolean validarNome(String nome) {
+		...
+	}
+}
+```
+
+2. Declarar o nome dado ao Bean (nesse exemplo, "nomeChinesValidator") na propriedade ``constraints.name.validador`` do 
+arquivo application.yml. Exemplo:
+
+```
+constraints:
+  name:
+    validador: nomeChinesValidator
+```
+
 # Segurança
 ### OWASP Top 10
 A aplicação responde (ou contribui para) os seguintes ataques descritos no
@@ -132,6 +159,12 @@ A aplicação responde (ou contribui para) os seguintes ataques descritos no
    retornados na requisição expondo detalhes da implementação da aplicação. Adicionalmente, payloads críticos e impressões
    necessárias em logs de informações dadas pelo cliente, são tratadas realizando scaping de caracteres utilizados em
    ataques.
+
+#### Observação:
+Essa aplicação expõe um endpoint para testes de observability que estaria suscetível à ataques classificados como
+``Improper Inventory Management``. Esse endpoint deverá ser exposto "apenas" em ambiente local e de testes, jamais
+deva ser exposto em produção. Na classe, foi adicionada a limitação por código por meio da annotation
+``@Profile({"!homol", "!prod"})``.
 
 # Observability
 
@@ -275,16 +308,3 @@ Para acessar o Grafana: [http://localhost:3000](http://localhost:3000).
 
 
 
-
-# validadorjwt
-ClaimsValidator
-Explicar limitação seed e name
-Explicar seed como string
-Explicar claims case insensitive
-
-top 10 lentas
-top 10 executadas
-estastistica logs
-
-alertas de falha
-rate limiting
