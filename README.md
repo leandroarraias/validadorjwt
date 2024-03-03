@@ -21,11 +21,43 @@ Caso ocorra algum erro sistêmico durante a requisição, será retornado false 
 - A claim Seed deve ser um número primo
 - O tamanho máximo da claim Name é de 256 caracteres
 
+#### Considerações adicionais sobre as regras de validação
+ - Para garantir uma boa performance, uma vez que não especificado o tamanho do seed, a aplicação irá limitá-lo à
+Integer.MAX_VALUE (2.147.483.647). Essa limitação também responde à requisitos de segurança, conforme descrito em seção
+seguinte
+ - Para padronização, o seed informato deverá ser o formato String, e não número
+ - O Name foi limitado a caracteres de nomes em Português
+ - As claims e roles podem ser case insensitive.
+
 # Arquitetura
 
 ### Diagrama de Integração
 
 <img alt="Arquitetura" src="./img/arquitetura.png">
+
+# Segurança
+### OWASP Top 10
+A aplicação responde (ou contribui para) os seguintes ataques descritos no 
+[OWASP API Security Top 10 (2013)](https://owasp.org/API-Security/editions/2023/en/0x11-t10/)
+1. Broken Object Level Authorization: A validação do token JWT é primordial para mitigar esse tipo de ataque,
+pois antes de verificar a autorização à um determinado recurso, é necessário verificar a validade do token.
+2. Broken Object Property Level Authorization: Os dados retornados, inclusive os status, são limitados, dificultando
+inclusive um ataque de discovery.
+3. Unrestricted Resource Consumption: A aplicação realiza uma validação prévia do tamanho do token enviado antes mesmo
+de tentar realizar o parse ou qualquer outra validação que consumirá mais recursos. Adicionalmente, como não houve 
+requisito específico, o tamanho do seed foi limitado de maneira a garantir a performance no cálculo de um número primo.
+4. Broken Function Level Authorization: A validação do token JWT é primordial para mitigar esse tipo de ataque,
+pois antes de verificar a autorização à uma determinada API, é necessário verificar a validade do token.
+5. Security Misconfiguration: Tratamento central das exceptions evitando que detalhes do erro, como stacktrace, sejam
+retornados na requisição expondo detalhes da implementação da aplicação. Adicionalmente, payloads críticos e impressões
+necessárias em logs de informações dadas pelo cliente, são tratadas realizando scaping de caracteres utilizados em
+ataques.
+
+#### Observação:
+Essa aplicação expõe um endpoint para testes de observability que estaria suscetível à ataques classificados como
+``Improper Inventory Management``. Esse endpoint deverá ser exposto "apenas" em ambiente local e de testes, jamais
+deva ser exposto em produção. Na classe, foi adicionada a limitação por código por meio da annotation
+``@Profile({"!homol", "!prod"})``.
 
 # Pré requisitos
 ### Java
@@ -243,3 +275,16 @@ Para acessar o Grafana: [http://localhost:3000](http://localhost:3000).
 
 
 
+
+# validadorjwt
+ClaimsValidator
+Explicar limitação seed e name
+Explicar seed como string
+Explicar claims case insensitive
+
+top 10 lentas
+top 10 executadas
+estastistica logs
+
+alertas de falha
+rate limiting
