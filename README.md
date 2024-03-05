@@ -115,31 +115,32 @@ eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJTZWVkIjoiNzg0MSIsIk5hbWUiOiJUb25pbmh
 ```
 
 # Customização
-### Regra de validação de nome
-O sistema permite a inclusão de novas regras de validação de nomes,e selecionar a regra a ser utilizada via arquivo 
-application.yml. Para isso, deve-se seguir os seguintes passos:
+### Regras de validação
+O sistema permite a customização das seguintes regras de validação: JWT, Claims, Role, Seed e Name.
 
-1. Criar uma nova classe concreta que implemente a interface ``NomeValidator``, e seja uma Spring Bean com um nome
-único. Por exemplo:
+Para inclusão e alteração das regras de validação, deve-se seguir os seguintes passos:
+
+1. Criar um novo Spring Bean com um nome customizado que implemente a interface de validação que se deseja customizar
+(ClaimsValidator, JwtValidator, NameValidator, RoleValidator ou SeedValidator). Por exemplo:
 
 ```
-@Component("nomeChinesValidator")
-public class NomeChinesValidator implements NomeValidator {
+@Component("nameChinesValidator")
+public class NameChinesValidator implements NameValidator {
 
 	@Override
-	public boolean validarNome(String nome) {
+	public boolean validarName(String name) {
 		...
 	}
 }
 ```
 
-2. Declarar o nome dado ao Bean (nesse exemplo, "nomeChinesValidator") na propriedade ``constraints.name.validador`` do 
+2. Declarar o nome dado ao Bean (nesse exemplo, "nameChinesValidator") na propriedade ``constraints.{regra}.validador`` do 
 arquivo application.yml. Exemplo:
 
 ```
 constraints:
   name:
-    validador: nomeChinesValidator
+    validador: nameChinesValidator
 ```
 
 # Segurança

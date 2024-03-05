@@ -1,11 +1,10 @@
 package com.arraias.validadorjwt.unittests;
 
-import com.arraias.validadorjwt.validator.ClaimsValidator;
+import com.arraias.validadorjwt.validator.impl.*;
 import com.arraias.validadorjwt.validator.JwtValidator;
-import com.arraias.validadorjwt.validator.NomePortuguesValidator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,10 +15,16 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(classes = {JwtValidator.class, ClaimsValidator.class, NomePortuguesValidator.class, ObjectMapper.class})
-class JwtValidatorTest {
+@SpringBootTest(classes = {
+		BasicJwtValidator.class,
+		DefaultClaimsValidator.class,
+		NamePortuguesValidator.class,
+		DefaultStringRoleValidator.class,
+		IntegerLimitSeedValidator.class})
+class BasicJwtValidatorTest {
 
 	@Autowired
+	@Qualifier("basicJwtValidator")
 	private JwtValidator jwtValidator;
 
 	@Value("${constraints.jwt.tamanhomaximo}")
@@ -46,11 +51,11 @@ class JwtValidatorTest {
 		String jwtFormatadoIncorretamente = "eyJhbGciOiJzI1NiJ9.dfsdfsfryJSr2xrIjoiQWRtaW4iLCJTZrkIjoiNzg0MSIsIk5hbrUiOiJUb25pbmhvIEFyYXVqbyJ9.QY05fsdfsIjtrcJnP533kQNk8QXcaleJ1Q01jWY_ZzIZuAg";
 		assertFalse(jwtValidator.validarJwt(jwtFormatadoIncorretamente));
 
-		String jwtNomeInvalido = gerarJwt(Map.of(
+		String jwtNameInvalido = gerarJwt(Map.of(
 				"Role", "External",
 				"Seed", "72341",
 				"Name", "M4ria Olivia"));
-		assertFalse(jwtValidator.validarJwt(jwtNomeInvalido));
+		assertFalse(jwtValidator.validarJwt(jwtNameInvalido));
 
 		String jwtMaisDe3Claims = gerarJwt(Map.of(
 				"Role", "Member",

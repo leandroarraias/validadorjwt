@@ -52,11 +52,11 @@ class ValidadorJwtApplicationTests {
 		String jwtFormatadoIncorretamente = "eyJhbGciOiJzI1NiJ9.dfsdfsfryJSr2xrIjoiQWRtaW4iLCJTZrkIjoiNzg0MSIsIk5hbrUiOiJUb25pbmhvIEFyYXVqbyJ9.QY05fsdfsIjtrcJnP533kQNk8QXcaleJ1Q01jWY_ZzIZuAg";
 		validarFalseForbidden(executar(jwtFormatadoIncorretamente));
 
-		String jwtNomeInvalido = gerarJwt(Map.of(
+		String jwtNameInvalido = gerarJwt(Map.of(
 				"Role", "External",
 				"Seed", "72341",
 				"Name", "M4ria Olivia"));
-		validarFalseForbidden(executar(jwtNomeInvalido));
+		validarFalseForbidden(executar(jwtNameInvalido));
 
 		String jwtMaisDe3Claims = gerarJwt(Map.of(
 				"Role", "Member",
