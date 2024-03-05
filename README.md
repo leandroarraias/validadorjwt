@@ -145,7 +145,7 @@ constraints:
 
 # Segurança
 ### OWASP Top 10
-A aplicação responde (ou contribui para) os seguintes ataques descritos no
+A aplicação responde (ou contribui para resposta) aos seguintes ataques descritos no
 [OWASP API Security Top 10 (2013)](https://owasp.org/API-Security/editions/2023/en/0x11-t10/)
 1. Broken Object Level Authorization: A validação do token JWT é primordial para mitigar esse tipo de ataque,
    pois antes de verificar a autorização à um determinado recurso, é necessário verificar a validade do token.
