@@ -4,7 +4,6 @@ services:
   otel-collector:
     container_name: otel-collector-validadorjwt
     image: otel/opentelemetry-collector-contrib:0.95.0
-    restart: always
     command:
       - --config=/etc/otelcol-contrib/otel-collector-config.yaml
     volumes:
@@ -23,7 +22,6 @@ services:
   prometheus:
     container_name: prometheus-validatorjwt
     image: prom/prometheus
-    restart: always
     command:
       - --config.file=/etc/prometheus/prometheus.yml
     volumes:
@@ -51,7 +49,6 @@ services:
   grafana:
     container_name: grafana-validadorjwt
     image: grafana/grafana
-    restart: always
     volumes:
       - ./cfg/grafana/datasources:/etc/grafana/provisioning/datasources:ro
       - ./cfg/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
@@ -61,6 +58,5 @@ services:
   zipkin:
     container_name: zipkin-validadorjwt
     image: openzipkin/zipkin
-    restart: always
     ports:
       - "9411:9411"
