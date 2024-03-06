@@ -1,6 +1,6 @@
 package com.arraias.validadorjwt.validator.impl;
 
-import com.arraias.validadorjwt.validator.ClaimsValidator;
+import com.arraias.validadorjwt.validator.AbstractClaimsValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ public class CompleteJwtValidator extends BasicJwtValidator {
 
 	private static final Logger logger = LoggerFactory.getLogger(CompleteJwtValidator.class);
 
-	public CompleteJwtValidator(ClaimsValidator claimsValidator) {
+	public CompleteJwtValidator(AbstractClaimsValidator claimsValidator) {
 		super(claimsValidator);
 	}
 

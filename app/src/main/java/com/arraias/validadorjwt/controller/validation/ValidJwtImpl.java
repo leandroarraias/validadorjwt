@@ -1,6 +1,6 @@
 package com.arraias.validadorjwt.controller.validation;
 
-import com.arraias.validadorjwt.validator.JwtValidator;
+import com.arraias.validadorjwt.validator.AbstractJwtValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidJwtImpl implements ConstraintValidator<ValidJwt, String> {
 
-	private final JwtValidator jwtValidator;
+	private final AbstractJwtValidator jwtValidator;
 
 	@Autowired
-	public ValidJwtImpl(JwtValidator jwtValidator) {
+	public ValidJwtImpl(AbstractJwtValidator jwtValidator) {
 		this.jwtValidator = jwtValidator;
 	}
 

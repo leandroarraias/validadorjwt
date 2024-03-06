@@ -1,4 +1,4 @@
-package com.arraias.validadorjwt.enums;
+package com.arraias.validadorjwt.validator.impl.enums;
 
 public enum RolesEnum {
 

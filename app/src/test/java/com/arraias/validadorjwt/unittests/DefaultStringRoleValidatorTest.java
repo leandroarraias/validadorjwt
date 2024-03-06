@@ -1,7 +1,8 @@
 package com.arraias.validadorjwt.unittests;
 
-import com.arraias.validadorjwt.enums.RolesEnum;
+import com.arraias.validadorjwt.validator.ClaimValidator;
 import com.arraias.validadorjwt.validator.impl.DefaultStringRoleValidator;
+import com.arraias.validadorjwt.validator.impl.enums.RolesEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,20 +16,20 @@ class DefaultStringRoleValidatorTest {
 
 	@Autowired
 	@Qualifier("defaultStringRoleValidator")
-	private DefaultStringRoleValidator roleValidator;
+	private ClaimValidator ruleValidator;
 
 	@Test
 	void testRolesValidas() {
-		assertTrue(roleValidator.validarRole("Admin"));
-		assertTrue(roleValidator.validarRole("Member".toUpperCase()));
-		assertTrue(roleValidator.validarRole("External".toLowerCase()));
+		assertTrue(ruleValidator.validar("Admin"));
+		assertTrue(ruleValidator.validar("Member".toUpperCase()));
+		assertTrue(ruleValidator.validar("External".toLowerCase()));
 	}
 
 	@Test
 	void testRolesInvalidas() {
-		assertFalse(roleValidator.validarRole(RolesEnum.ADMIN.toString().concat("a")));
-		assertFalse(roleValidator.validarRole(null));
-		assertFalse(roleValidator.validarRole("1"));
+		assertFalse(ruleValidator.validar(RolesEnum.ADMIN.toString().concat("a")));
+		assertFalse(ruleValidator.validar(null));
+		assertFalse(ruleValidator.validar("1"));
 	}
 
 }

@@ -1,11 +1,11 @@
 package com.arraias.validadorjwt.unittests;
 
-import com.arraias.validadorjwt.enums.ClaimsEnum;
-import com.arraias.validadorjwt.validator.ClaimsValidator;
+import com.arraias.validadorjwt.validator.AbstractClaimsValidator;
 import com.arraias.validadorjwt.validator.impl.DefaultClaimsValidator;
 import com.arraias.validadorjwt.validator.impl.DefaultStringRoleValidator;
 import com.arraias.validadorjwt.validator.impl.IntegerLimitSeedValidator;
 import com.arraias.validadorjwt.validator.impl.NamePortuguesValidator;
+import com.arraias.validadorjwt.validator.impl.enums.ClaimsEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,7 +26,7 @@ class DefaultClaimsValidatorTest {
 
 	@Autowired
 	@Qualifier("defaultClaimsValidator")
-	private ClaimsValidator claimsValidator;
+	private AbstractClaimsValidator claimsValidator;
 
 	@Test
 	void testClaimsValidos() {

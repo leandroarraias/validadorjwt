@@ -1,6 +1,7 @@
 package com.arraias.validadorjwt.validator.impl;
 
-import com.arraias.validadorjwt.validator.NameValidator;
+import com.arraias.validadorjwt.validator.ClaimValidator;
+import com.arraias.validadorjwt.validator.impl.enums.ClaimsEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,9 +12,9 @@ import java.util.regex.Pattern;
 import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
 @Component("namePortuguesValidator")
-public class NamePortuguesValidator implements NameValidator {
+public class NamePortuguesValidator implements ClaimValidator {
 
-	@Value("${constraints.name.tamanhomaximo}")
+	@Value("${config.name.tamanhomaximo}")
 	private int nameTamanhoMaximo;
 
     protected static final String ALFABETICO = "a-zA-Z";
@@ -45,22 +46,27 @@ public class NamePortuguesValidator implements NameValidator {
     }
 
 	@Override
-	public boolean validarName(Object name) {
+	public String getClaimKey() {
+		return ClaimsEnum.NAME.name();
+	}
 
-		if (name instanceof String nameString) {
+	@Override
+	public boolean validar(Object claimValue) {
 
-			if (nameString.isBlank()) {
-				logger.info("Name nao informado: \"{}\"", nameString);
+		if (claimValue instanceof String name) {
+
+			if (name.isBlank()) {
+				logger.info("Name nao informado: \"{}\"", name);
 				return false;
 			}
 
-			if (nameString.length() > nameTamanhoMaximo) {
-				logger.info("Name com tamanho invalido: {}", nameString.length());
+			if (name.length() > nameTamanhoMaximo) {
+				logger.info("Name com tamanho invalido: {}", name.length());
 				return false;
 			}
 
-			if (!Pattern.matches(getPattern(), nameString)) {
-				logger.info("Name com caracteres invalidos: {}", escapeHtml4(nameString));
+			if (!Pattern.matches(getPattern(), name)) {
+				logger.info("Name com caracteres invalidos: {}", escapeHtml4(name));
 				return false;
 			}
 

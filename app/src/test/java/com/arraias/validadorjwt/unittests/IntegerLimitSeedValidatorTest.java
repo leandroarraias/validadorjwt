@@ -1,6 +1,6 @@
 package com.arraias.validadorjwt.unittests;
 
-import com.arraias.validadorjwt.validator.SeedValidator;
+import com.arraias.validadorjwt.validator.ClaimValidator;
 import com.arraias.validadorjwt.validator.impl.IntegerLimitSeedValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,28 +19,28 @@ class IntegerLimitSeedValidatorTest {
 
 	@Autowired
 	@Qualifier("integerLimitSeedValidator")
-	private SeedValidator seedValidator;
+	private ClaimValidator ruleValidator;
 
-	@Value("${constraints.seed.valormaximo}")
+	@Value("${config.seed.valormaximo}")
 	private int seedValorMaximo;
 
 	@Test
 	void testSeedsValidos() {
-		assertTrue(seedValidator.validarSeed("2"));
-		assertTrue(seedValidator.validarSeed("3"));
-		assertTrue(seedValidator.validarSeed(Integer.toString(seedValorMaximo)));
+		assertTrue(ruleValidator.validar("2"));
+		assertTrue(ruleValidator.validar("3"));
+		assertTrue(ruleValidator.validar(Integer.toString(seedValorMaximo)));
 	}
 
 	@Test
 	void testSeedsInvalidos() {
-		assertFalse(seedValidator.validarSeed("-1"));
-		assertFalse(seedValidator.validarSeed("0"));
-		assertFalse(seedValidator.validarSeed("1"));
-		assertFalse(seedValidator.validarSeed(null));
-		assertFalse(seedValidator.validarSeed(" "));
-		assertFalse(seedValidator.validarSeed(new BigInteger("2")));
-		assertFalse(seedValidator.validarSeed(new BigInteger(Integer.toString(seedValorMaximo)).add(ONE).toString()));
-		assertFalse(seedValidator.validarSeed("<script>alert('se passando por seed')</script>"));
+		assertFalse(ruleValidator.validar("-1"));
+		assertFalse(ruleValidator.validar("0"));
+		assertFalse(ruleValidator.validar("1"));
+		assertFalse(ruleValidator.validar(null));
+		assertFalse(ruleValidator.validar(" "));
+		assertFalse(ruleValidator.validar(new BigInteger("2")));
+		assertFalse(ruleValidator.validar(new BigInteger(Integer.toString(seedValorMaximo)).add(ONE).toString()));
+		assertFalse(ruleValidator.validar("<script>alert('se passando por seed')</script>"));
 	}
 
 }

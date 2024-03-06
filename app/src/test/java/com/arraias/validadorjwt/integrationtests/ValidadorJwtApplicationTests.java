@@ -25,7 +25,7 @@ class ValidadorJwtApplicationTests {
 	@Autowired
 	private TestRestTemplate template;
 
-	@Value("${constraints.jwt.tamanhomaximo}")
+	@Value("${config.jwt.tamanhomaximo}")
 	private int jwtTamanhoMaximo;
 
 	@Test

@@ -1,7 +1,7 @@
 package com.arraias.validadorjwt.unittests;
 
+import com.arraias.validadorjwt.validator.AbstractJwtValidator;
 import com.arraias.validadorjwt.validator.impl.*;
-import com.arraias.validadorjwt.validator.JwtValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,7 +22,7 @@ class CompleteJwtValidatorTest {
 
 	@Autowired
 	@Qualifier("completeJwtValidator")
-	private JwtValidator jwtValidator;
+	private AbstractJwtValidator jwtValidator;
 
 	@Test
 	void testJwtValidoLancaExcecao() {

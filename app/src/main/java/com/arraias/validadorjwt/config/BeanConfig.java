@@ -1,51 +1,53 @@
 package com.arraias.validadorjwt.config;
 
-import com.arraias.validadorjwt.validator.*;
+import com.arraias.validadorjwt.validator.AbstractClaimsValidator;
+import com.arraias.validadorjwt.validator.AbstractJwtValidator;
+import com.arraias.validadorjwt.validator.ClaimValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 public class BeanConfig {
 
-	@Value("${constraints.jwt.validador}")
-	private String constraintsJwtValidador;
+	@Value("${config.jwt.validador}")
+	private String configJwtValidador;
 
-	@Value("${constraints.claims.validador}")
-	private String constraintsClaimsValidador;
+	@Value("${config.claims.validador}")
+	private String configClaimsValidador;
 
-	@Value("${constraints.name.validador}")
-	private String constraintsNameValidador;
-
-	@Value("${constraints.seed.validador}")
-	private String constraintsSeedValidador;
-
-	@Value("${constraints.role.validador}")
-	private String constraintsRoleValidador;
+	@Value("${config.claims.rules}")
+	private List<String> claimRules;
 
 	@Bean
-	public JwtValidator jwtValidator(ApplicationContext context) {
-		return (JwtValidator) context.getBean(constraintsJwtValidador);
+	public List<ClaimValidator> claimRulesValidator(ApplicationContext context) {
+
+		if (claimRules == null || claimRules.isEmpty()) {
+			return new ArrayList<>();
+		}
+
+		ArrayList<ClaimValidator> rules = new ArrayList<>();
+
+		for (String claimRule : claimRules) {
+			rules.add((ClaimValidator) context.getBean(claimRule));
+		}
+
+		return rules;
+
 	}
 
 	@Bean
-	public ClaimsValidator claimsValidator(ApplicationContext context) {
-		return (ClaimsValidator) context.getBean(constraintsClaimsValidador);
+	public AbstractJwtValidator jwtValidator(ApplicationContext context) {
+		return (AbstractJwtValidator) context.getBean(configJwtValidador);
 	}
 
 	@Bean
-	public NameValidator nameValidator(ApplicationContext context) {
-		return (NameValidator) context.getBean(constraintsNameValidador);
-	}
-
-	@Bean
-	public SeedValidator seedValidator(ApplicationContext context) {
-		return (SeedValidator) context.getBean(constraintsSeedValidador);
-	}
-
-	@Bean
-	public RoleValidator roleValidator(ApplicationContext context) {
-		return (RoleValidator) context.getBean(constraintsRoleValidador);
+	public AbstractClaimsValidator claimsValidator(ApplicationContext context) {
+		List<ClaimValidator> rules = claimRulesValidator(context);
+		return (AbstractClaimsValidator) context.getBean(configClaimsValidador, rules);
 	}
 }

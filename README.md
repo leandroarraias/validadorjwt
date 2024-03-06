@@ -115,32 +115,68 @@ eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJTZWVkIjoiNzg0MSIsIk5hbWUiOiJUb25pbmh
 ```
 
 # Customização
-### Regras de validação
-O sistema permite a customização das seguintes regras de validação: JWT, Claims, Role, Seed e Name.
+### Validação do token JWT
+Para customizar a validação do token JWT:
+1. Crie uma classe concreta que direta ou indiretamente extenda a classe abstrata ``AbstractJwtValidator``
+2. Implemente o método ``validarJwt(String jwt)`` de acordo a necessidade
+3. Defina a classe como um Spring Bean e defina um nome único ao mesmo
+4. Insira o nome do bean na propriedade ``config.jwt.validador`` do arquivo ``application.yml``
 
-Para inclusão e alteração das regras de validação, deve-se seguir os seguintes passos:
-
-1. Criar um novo Spring Bean com um nome customizado que implemente a interface de validação que se deseja customizar
-(ClaimsValidator, JwtValidator, NameValidator, RoleValidator ou SeedValidator). Por exemplo:
-
+Exemplo:
 ```
-@Component("nameChinesValidator")
-public class NameChinesValidator implements NameValidator {
-
-	@Override
-	public boolean validarName(String name) {
-		...
-	}
+// Extende indiretamente a classe AbstractJwtValidator
+@Component("completeJwtValidator")
+public class CompleteJwtValidator extends BasicJwtValidator {
+   ...
 }
+
+// No application.yml
+config:
+  jwt:
+    validador: completeJwtValidator
 ```
 
-2. Declarar o nome dado ao Bean (nesse exemplo, "nameChinesValidator") na propriedade ``constraints.{regra}.validador`` do 
-arquivo application.yml. Exemplo:
+### Validação genérica dos claims
+Para customizar a validação genérica dos claims:
+1. Crie uma classe concreta que direta ou indiretamente extenda a classe abstrata ``AbstractClaimsValidator``
+2. Implemente o método ``validarClaims(Map<String, Object> claims)`` de acordo a necessidade
+3. Defina a classe como um Spring Bean e defina um nome único ao mesmo
+4. Insira o nome do bean na propriedade ``config.claims.validador`` do arquivo ``application.yml``
 
+Exemplo:
 ```
-constraints:
-  name:
-    validador: nameChinesValidator
+// Extende diretamente a classe AbstractClaimsValidator
+@Component("alternativeClaimsValidator")
+public class AlternativeClaimsValidator extends AbstractClaimsValidator {
+   ...
+}
+
+// No application.yml
+config:
+  claims:
+    validador: alternativeClaimsValidator
+```
+
+### Regras de validação individual de cada claim
+Para customizar ou adicionar a validação de um novo claim:
+
+1. Crie uma classe concreta que direta ou indiretamente implemente a interface ``ClaimValidator``
+2. Implemente os métodos ``String getClaimKey()`` e ``validar(Object claimValue)`` de acordo a necessidade
+3. Defina a classe como um Spring Bean e defina um nome único ao mesmo
+4. Insira o nome do bean na propriedade ``config.claims.rules`` do arquivo ``application.yml`` em forma de lista
+
+Exemplo:
+```
+// Implementa diretamente a interface ClaimValidator
+@Component("nameChinesValidator")
+public class NameChinesValidator implements ClaimValidator {
+   ...
+}
+
+// No application.yml
+config:
+  claims:
+    rules: nameChinesValidator, defaultStringRoleValidator, integerLimitSeedValidator
 ```
 
 # Segurança

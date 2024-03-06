@@ -1,6 +1,7 @@
 package com.arraias.validadorjwt.validator.impl;
 
-import com.arraias.validadorjwt.validator.SeedValidator;
+import com.arraias.validadorjwt.validator.ClaimValidator;
+import com.arraias.validadorjwt.validator.impl.enums.ClaimsEnum;
 import org.apache.commons.math3.primes.Primes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,24 +14,29 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
 @Component("integerLimitSeedValidator")
-public class IntegerLimitSeedValidator implements SeedValidator {
+public class IntegerLimitSeedValidator implements ClaimValidator {
 
-	@Value("${constraints.seed.valormaximo}")
+	@Value("${config.seed.valormaximo}")
 	private int seedValorMaximo;
 
 	private static final Logger logger = LoggerFactory.getLogger(IntegerLimitSeedValidator.class);
 
 	@Override
-	public boolean validarSeed(Object seed) {
+	public String getClaimKey() {
+		return ClaimsEnum.SEED.name();
+	}
 
-		if (seed instanceof String seedString) {
+	@Override
+	public boolean validar(Object claimValue) {
 
-			if (!isNumeric(seedString)) {
-				logger.info("Seed com valor invalido: {}", escapeHtml4(seedString));
+		if (claimValue instanceof String seed) {
+
+			if (!isNumeric(seed)) {
+				logger.info("Seed com valor invalido: {}", escapeHtml4(seed));
 				return false;
 			}
 
-			BigInteger bigSeed = new BigInteger(seedString);
+			BigInteger bigSeed = new BigInteger(seed);
 			BigInteger bigSeedValorMaximo = new BigInteger(Integer.toString(seedValorMaximo));
 
 			if (bigSeed.compareTo(bigSeedValorMaximo) > 0) {

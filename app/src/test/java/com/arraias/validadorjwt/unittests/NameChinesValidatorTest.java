@@ -1,6 +1,6 @@
 package com.arraias.validadorjwt.unittests;
 
-import com.arraias.validadorjwt.validator.NameValidator;
+import com.arraias.validadorjwt.validator.ClaimValidator;
 import com.arraias.validadorjwt.validator.impl.NameChinesValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,10 @@ class NameChinesValidatorTest {
 
 	@Autowired
 	@Qualifier("nameChinesValidator")
-	private NameValidator nameValidator;
+	private ClaimValidator ruleValidator;
 
 	@Test
 	void testQualquerNameLancaExcecao() {
-		assertThrows(UnsupportedOperationException.class, () -> nameValidator.validarName("Qualquer name"));
+		assertThrows(UnsupportedOperationException.class, () -> ruleValidator.validar("Qualquer name"));
 	}
 }

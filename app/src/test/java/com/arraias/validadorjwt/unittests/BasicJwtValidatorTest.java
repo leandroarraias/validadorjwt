@@ -1,7 +1,7 @@
 package com.arraias.validadorjwt.unittests;
 
+import com.arraias.validadorjwt.validator.AbstractJwtValidator;
 import com.arraias.validadorjwt.validator.impl.*;
-import com.arraias.validadorjwt.validator.JwtValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,9 +25,9 @@ class BasicJwtValidatorTest {
 
 	@Autowired
 	@Qualifier("basicJwtValidator")
-	private JwtValidator jwtValidator;
+	private AbstractJwtValidator jwtValidator;
 
-	@Value("${constraints.jwt.tamanhomaximo}")
+	@Value("${config.jwt.tamanhomaximo}")
 	private int jwtTamanhoMaximo;
 
 	@Test

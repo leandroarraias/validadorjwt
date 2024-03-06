@@ -1,5 +1,4 @@
-package com.arraias.validadorjwt.controller.exception;
-
+package com.arraias.validadorjwt.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

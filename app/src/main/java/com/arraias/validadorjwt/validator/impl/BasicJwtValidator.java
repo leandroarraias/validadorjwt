@@ -1,7 +1,7 @@
 package com.arraias.validadorjwt.validator.impl;
 
-import com.arraias.validadorjwt.validator.ClaimsValidator;
-import com.arraias.validadorjwt.validator.JwtValidator;
+import com.arraias.validadorjwt.validator.AbstractClaimsValidator;
+import com.arraias.validadorjwt.validator.AbstractJwtValidator;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.consumer.InvalidJwtException;
@@ -20,18 +20,16 @@ import static org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace;
 import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
 @Component("basicJwtValidator")
-public class BasicJwtValidator implements JwtValidator {
+public class BasicJwtValidator extends AbstractJwtValidator {
 
-	@Value("${constraints.jwt.tamanhomaximo}")
+	@Value("${config.jwt.tamanhomaximo}")
 	private int jwtTamanhoMaximo;
-
-	private final ClaimsValidator claimsValidator;
 
 	private static final Logger logger = LoggerFactory.getLogger(BasicJwtValidator.class);
 
 	@Autowired
-	public BasicJwtValidator(ClaimsValidator claimsValidator) {
-		this.claimsValidator = claimsValidator;
+	public BasicJwtValidator(AbstractClaimsValidator claimsValidator) {
+		super(claimsValidator);
 	}
 
 	@Override
@@ -49,7 +47,7 @@ public class BasicJwtValidator implements JwtValidator {
 
 		try {
 			Map<String, Object> claims = extrairClaims(jwt);
-			return claimsValidator.validarClaims(claims);
+			return getClaimsValidator().validarClaims(claims);
 		} catch (InvalidJwtException ex) {
 			var exEscaped = escapeHtml4(getStackTrace(ex));
 			logger.error("Falha ao extrair claims do Token JWT: %s%n%s".formatted(escapeHtml4(jwt), exEscaped));

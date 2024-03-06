@@ -6,20 +6,17 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /api-docs/swagger.html
-constraints:
+config:
   jwt:
     validador: basicJwtValidator
     tamanhomaximo: 1000
-  name:
-    validador: namePortuguesValidator
-    tamanhomaximo: 256
-  seed:
-    validador: integerLimitSeedValidator
-    valormaximo: 2147483647
   claims:
     validador: defaultClaimsValidator
-  role:
-    validador: defaultStringRoleValidator
+    rules: defaultStringRoleValidator, namePortuguesValidator, integerLimitSeedValidator
+  name:
+    tamanhomaximo: 256
+  seed:
+    valormaximo: 2147483647
 management:
   tracing:
     sampling:
